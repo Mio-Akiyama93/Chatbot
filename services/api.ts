@@ -1,6 +1,6 @@
 import { Message } from '../types';
 
-export const fetchChatCompletion = async (messages: Message[]): Promise<string> => {
+export const fetchChatCompletion = async (messages: Message[], model: string): Promise<string> => {
   try {
     const response = await fetch("/api/proxy", {
       method: 'POST',
@@ -9,6 +9,7 @@ export const fetchChatCompletion = async (messages: Message[]): Promise<string> 
       },
       body: JSON.stringify({
         messages: messages,
+        model: model,
       }),
     });
 

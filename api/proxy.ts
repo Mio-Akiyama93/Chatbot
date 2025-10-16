@@ -2,16 +2,13 @@
 // It allows us to keep the API key secret on the server.
 // Create a file at /api/proxy.ts with this content.
 
-// Copied from constants.ts to avoid bundling issues with Vercel serverless functions.
-const MODEL_NAME = 'nousresearch/deephermes-3-llama-3-8b-preview:free';
-
 export default async function handler(request, response) {
   if (request.method !== 'POST') {
     response.setHeader('Allow', ['POST']);
     return response.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { messages } = request.body;
+  const { messages, model } = request.body;
   const API_KEY = process.env.API_KEY;
 
   if (!API_KEY) {
@@ -19,9 +16,14 @@ export default async function handler(request, response) {
     return response.status(500).json({ error: "The API key is not configured on the server." });
   }
 
-  if (!messages) {
-    return response.status(400).json({ error: "Missing 'messages' in request body." });
+  if (!messages || !model) {
+    return response.status(400).json({ error: "Missing 'messages' or 'model' in request body." });
   }
+
+  // Dynamically set headers based on the request's origin for portability
+  const referer = request.headers.referer || 'https://chatbot-chi-topaz.vercel.app/'; // A fallback
+  const siteUrl = new URL(referer).origin;
+  const siteTitle = new URL(referer).hostname;
 
   try {
     const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -29,12 +31,12 @@ export default async function handler(request, response) {
       headers: {
         'Authorization': `Bearer ${API_KEY}`,
         'Content-Type': 'application/json',
-        // Recommended headers for free usage
-        'HTTP-Referer': 'https://chatbot-chi-topaz.vercel.app/', 
-        'X-Title': 'Yui AI Chatbot',
+        // Recommended headers for free usage, now dynamic
+        'HTTP-Referer': siteUrl, 
+        'X-Title': `Yui AI Chatbot (${siteTitle})`,
       },
       body: JSON.stringify({
-        model: MODEL_NAME,
+        model: model,
         messages: messages,
       }),
     });

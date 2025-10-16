@@ -4,7 +4,7 @@ import { ChatView } from './components/ChatView';
 import { Bars3Icon, XMarkIcon } from './components/Icons';
 import { ChatSession, Message } from './types';
 import { fetchChatCompletion } from './services/api';
-import { SYSTEM_PROMPT } from './constants';
+import { MODEL_NAME, SYSTEM_PROMPT } from './constants';
 
 const App: React.FC = () => {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
@@ -79,7 +79,7 @@ const App: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const assistantResponse = await fetchChatCompletion(updatedMessages);
+      const assistantResponse = await fetchChatCompletion(updatedMessages, MODEL_NAME);
       const assistantMessage: Message = { role: 'assistant', content: assistantResponse };
       
       setSessions(prev =>
