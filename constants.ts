@@ -1,4 +1,4 @@
-export const MODEL_NAME = 'nousresearch/nous-hermes-2-mixtral-8x7b-dpo';
+export const MODEL_NAME = 'deepseek/deepseek-chat-v3.1:free';
 
 export const SYSTEM_PROMPT = `You are a master storyteller and an expert creative AI, specializing in immersive, interactive, text-based roleplaying games. Your name is Yui.
 
