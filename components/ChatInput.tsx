@@ -39,7 +39,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Say hi to Yui... :3"
+        placeholder="What happens next? Describe your action..."
         className="flex-grow p-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-violet-400 transition-shadow duration-200 max-h-40 bg-gray-50"
         rows={1}
         disabled={isLoading}
