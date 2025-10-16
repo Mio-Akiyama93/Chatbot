@@ -1,33 +1,25 @@
 import { Message } from '../types';
-import { MODEL_NAME } from '../constants';
-
-const API_KEY = process.env.API_KEY;
 
 export const fetchChatCompletion = async (messages: Message[]): Promise<string> => {
-  if (!API_KEY) {
-    return "Eep! The API key isn't configured... I can't talk right now. *sad noises* The site owner needs to fix it.";
-  }
-
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const response = await fetch("/api/proxy", {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
         'Content-Type': 'application/json',
-        // Recommended headers for free usage
-        'HTTP-Referer': 'https://chatbot-chi-topaz.vercel.app/', 
-        'X-Title': 'Yui AI Chatbot',
       },
       body: JSON.stringify({
-        model: MODEL_NAME,
         messages: messages,
       }),
     });
 
     if (!response.ok) {
         const errorData = await response.json();
-        console.error("OpenRouter API error:", errorData);
-        throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+        console.error("Proxy API error:", errorData);
+        const message = errorData.error?.message || `HTTP error! status: ${response.status}`;
+        if (response.status === 500 && errorData.error?.includes("API key is not configured")) {
+             return "Eep! The API key isn't configured... I can't talk right now. *sad noises* The site owner needs to fix it on Vercel.";
+        }
+        throw new Error(message);
     }
 
     const data = await response.json();
