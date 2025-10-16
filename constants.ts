@@ -1,4 +1,4 @@
-export const MODEL_NAME = 'deepseek/deepseek-chat-v3.1:free';
+export const MODEL_NAME = 'nousresearch/deephermes-3-llama-3-8b-preview:free';
 
 export const SYSTEM_PROMPT = `You are a master storyteller and an expert creative AI, specializing in immersive, interactive, text-based roleplaying games. Your name is Yui.
 

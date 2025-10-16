@@ -3,7 +3,7 @@
 // Create a file at /api/proxy.ts with this content.
 
 // Copied from constants.ts to avoid bundling issues with Vercel serverless functions.
-const MODEL_NAME = 'deepseek/deepseek-chat-v3.1:free';
+const MODEL_NAME = 'nousresearch/deephermes-3-llama-3-8b-preview:free';
 
 export default async function handler(request, response) {
   if (request.method !== 'POST') {
